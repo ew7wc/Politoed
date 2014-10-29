@@ -1,0 +1,191 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".LightUpRPi">
+
+    <TextView
+        android:text="@string/lightUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lightRPiMsg"
+        android:textSize="24sp"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+
+    <TextView
+        android:text="@string/directions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lightRPiMsg"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18sp"
+        android:paddingTop="10sp"
+        android:id="@+id/descriptionTxt"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ipURL"
+        android:id="@+id/ipUrl"
+        android:layout_below="@+id/descriptionTxt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="37dp"
+        android:textSize="18sp"
+        android:textIsSelectable="false"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intensityTxt"
+        android:id="@+id/intensity"
+        android:textSize="18sp"
+        android:layout_marginTop="46dp"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_below="@+id/enterLightID"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lightIdTxt"
+        android:id="@+id/lightID"
+        android:textSize="18sp"
+        android:layout_marginTop="54dp"
+        android:layout_below="@+id/ipUrl"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enterUrl"
+        android:layout_toEndOf="@+id/ipUrl"
+        android:inputType="textUri"
+        android:hint="@string/enterURLHintMsg"
+        android:layout_above="@+id/lightID"
+        android:layout_toRightOf="@+id/ipUrl"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enterLightID"
+        android:layout_alignBottom="@+id/lightID"
+        android:layout_toRightOf="@+id/lightID"
+        android:layout_toEndOf="@+id/lightID"
+        android:hint="@string/lightIdHint"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:layout_toEndOf="@+id/intensity"
+        android:layout_alignBottom="@+id/intensity"
+        android:layout_alignRight="@+id/enterLightID"
+        android:layout_alignEnd="@+id/enterLightID"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_toRightOf="@+id/intensity"
+        android:max="100" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addLightBtnMsg"
+        android:id="@+id/addLightBtn"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_toStartOf="@+id/enterUrl"
+        android:onClick="addLight"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/enterUrl" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/propagateTxt"
+        android:id="@+id/propagateSwitch"
+        android:layout_marginBottom="46dp"
+        android:layout_above="@+id/submitReqBtn"
+        android:layout_alignRight="@+id/lightRPiMsg"
+        android:layout_alignEnd="@+id/lightRPiMsg" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submitReqBtnTxt"
+        android:id="@+id/submitReqBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/propagateSwitch"
+        android:layout_alignStart="@+id/propagateSwitch"
+        android:layout_marginBottom="41dp"
+        android:onClick="sendRequest" />
+
+    <TextView
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/currJSONReq"
+        android:id="@+id/jsonRequest"
+        android:textSize="18sp"
+        android:layout_below="@+id/addLightBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="49dp" />
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/displayJSON"
+        android:layout_below="@+id/jsonRequest"
+        android:layout_alignLeft="@+id/propagateSwitch"
+        android:layout_alignStart="@+id/propagateSwitch" />
+
+    <TextView
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick a color!"
+        android:id="@+id/colorTxt"
+        android:textSize="18sp"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/intensity"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rgbVal"
+        android:layout_toEndOf="@+id/colorTxt"
+        android:singleLine="true"
+        android:hint="enter an rgb value separated by commas"
+        android:layout_alignBottom="@+id/colorTxt"
+        android:layout_toRightOf="@+id/colorTxt" />
+
+
+</RelativeLayout>
