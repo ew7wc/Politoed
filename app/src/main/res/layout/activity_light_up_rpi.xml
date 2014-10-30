@@ -106,7 +106,7 @@
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
         android:layout_toRightOf="@+id/intensity"
-        android:max="100" />
+        android:max="1" />
 
     <Button
         android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.example.virginia.cs.edu.politoed;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,33 +26,30 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class LightUpRPi extends Activity {
 
     Button submitBtn;
-    EditText urlEditText;
+    EditText urlText;
+    EditText lightIDText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_up_rpi);
 
-
-        urlEditText = (EditText)findViewById(R.id.enterUrl);
     }
 
-
-
     public void sendRequest(View view) {
+        //Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
+        //Get the URL
+        urlText = (EditText)findViewById(R.id.enterUrl);
+        String url = urlText.toString();
 
-        //Get the URL the user entered:
-        String url = urlEditText.getText().toString();
-
-
-        Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(), url , Toast.LENGTH_LONG).show();
 
         JSONObject json = new JSONObject();
         JSONArray arr = new JSONArray();
@@ -67,7 +65,7 @@ public class LightUpRPi extends Activity {
             arrayElement1.put("intensity", .3);
             arr.put(arrayElement1);
 
-            arrayElement2.put("lightId", 15);
+            arrayElement2.put("lightId", 2);
             arrayElement2.put("red", 0);
             arrayElement2.put("green", 255);
             arrayElement2.put("blue", 0);
@@ -89,15 +87,6 @@ public class LightUpRPi extends Activity {
         sendJson(json, url);
     }
 
-    protected void buildJSONObject() {
-        //Get RGB
-        //Get Intensity
-        //Get lightId
-        //add to the JSON object.
-
-
-    }
-
     protected void sendJson(final JSONObject json, final String url) {
         Thread t = new Thread() {
 
@@ -112,16 +101,19 @@ public class LightUpRPi extends Activity {
                     StringEntity se = new StringEntity(json.toString());
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     post.setEntity(se);
+
                     response = client.execute(post);
 
                     /*Checking response */
                     if(response!=null){
                         InputStream in = response.getEntity().getContent(); //Get the data in the entity
-                        Toast.makeText(getApplicationContext(), in.toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), in.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 } catch(Exception e) {
                     e.printStackTrace();
+
+                    Log.e("Error", "Cannot Establish Connection");
                 }
 
                 Looper.loop(); //Loop in the message queue
