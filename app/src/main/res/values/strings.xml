@@ -3,10 +3,10 @@
 
     <string name="app_name">Politoed</string>
     <string name="lightUp">Light up your RPi!</string>
-    <string name="directions">Please fill out the following fields and send your request.</string>
+    <string name="directions">Please fill out the URL to send your request. (e.g. http://ipAddr/rpi)</string>
     <string name="action_settings">Settings</string>
     <string name="search_hint">Test</string>
-    <string name="ipURL">IP or URL: </string>
+    <string name="ipURL">URL: </string>
     <string name="intensityTxt">Intensity (between 0 and 1)</string>
     <string name="lightIdTxt">Light ID (0 to 20):</string>
     <string name="lightIdHint">enter light id of the light you want lit</string>

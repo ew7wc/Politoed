@@ -45,11 +45,11 @@ public class LightUpRPi extends Activity {
     }
 
     public void sendRequest(View view) {
-        //Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
         //Get the URL
         urlText = (EditText)findViewById(R.id.enterUrl);
-        String url = urlText.toString();
-
+        String url = urlText.getText().toString();
+        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
 
         JSONObject json = new JSONObject();
         JSONArray arr = new JSONArray();
@@ -69,14 +69,14 @@ public class LightUpRPi extends Activity {
             arrayElement2.put("red", 0);
             arrayElement2.put("green", 255);
             arrayElement2.put("blue", 0);
-            arrayElement2.put("intensity", .7);
+            arrayElement2.put("intensity", .3);
             arr.put(arrayElement2);
 
             arrayElement3.put("lightId", 22);
             arrayElement3.put("red", 0);
             arrayElement3.put("green", 0);
             arrayElement3.put("blue", 255);
-            arrayElement3.put("intensity", .7);
+            arrayElement3.put("intensity", .3);
             arr.put(arrayElement3);
             json.put("lights", arr);
             json.put("propagate", true);
@@ -107,7 +107,7 @@ public class LightUpRPi extends Activity {
                     /*Checking response */
                     if(response!=null){
                         InputStream in = response.getEntity().getContent(); //Get the data in the entity
-                        //Toast.makeText(getApplicationContext(), in.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), in.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 } catch(Exception e) {
