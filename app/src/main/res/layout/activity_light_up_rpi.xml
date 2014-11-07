@@ -53,9 +53,7 @@
         android:layout_toEndOf="@+id/ipUrl"
         android:inputType="textUri"
         android:hint="@string/enterURLHintMsg"
-        android:paddingLeft="15sp"
-        android:paddingRight="15sp"
-        android:layout_alignBottom="@+id/ipUrl"
+        android:layout_above="@+id/submitReqBtn"
         android:layout_toRightOf="@+id/ipUrl" />
 
     <Button
@@ -71,6 +69,18 @@
         android:layout_alignRight="@+id/lightRPiMsg"
         android:layout_alignEnd="@+id/lightRPiMsg" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rpi"
+        android:id="@+id/textView"
+        android:textSize="18sp"
+        android:textIsSelectable="false"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:layout_toEndOf="@+id/enterUrl"
+        android:layout_alignBottom="@+id/enterUrl"
+        android:layout_toRightOf="@+id/enterUrl" />
 
 
 </RelativeLayout>

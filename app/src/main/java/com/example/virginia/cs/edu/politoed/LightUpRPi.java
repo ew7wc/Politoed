@@ -49,6 +49,8 @@ public class LightUpRPi extends Activity {
         //Get the URL
         urlText = (EditText)findViewById(R.id.enterUrl);
         String url = urlText.getText().toString();
+        url = "http://" + url + "/rpi";
+
         Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
 
         JSONObject json = new JSONObject();
@@ -107,7 +109,7 @@ public class LightUpRPi extends Activity {
                     /*Checking response */
                     if(response!=null){
                         InputStream in = response.getEntity().getContent(); //Get the data in the entity
-                        Toast.makeText(getApplicationContext(), in.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Request sent!", Toast.LENGTH_LONG).show();
                     }
 
                 } catch(Exception e) {
