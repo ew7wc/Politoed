@@ -16,6 +16,9 @@
     <string name="submitReqBtnTxt">Submit request!</string>
     <string name="enterURLHintMsg">enter your ip address</string>
     <string name="rpi">/rpi</string>
-
+    <string name="title_activity_set_tasks_and_alarms">SetTasksAndAlarms</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_set_alarm">SetAlarm</string>
+    <string name="title_activity_one_alarm">OneAlarm</string>
 
 </resources>
