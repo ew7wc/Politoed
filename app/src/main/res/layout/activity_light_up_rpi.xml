@@ -82,5 +82,4 @@
         android:layout_alignBottom="@+id/enterUrl"
         android:layout_toRightOf="@+id/enterUrl" />
 
-
 </RelativeLayout>
