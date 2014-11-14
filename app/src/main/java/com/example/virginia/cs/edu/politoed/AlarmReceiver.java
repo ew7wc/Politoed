@@ -1,7 +1,9 @@
 package com.example.virginia.cs.edu.politoed;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,5 +23,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         i.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         context.startActivity(i);
         //Log.e("RECEIVED ALARM", "alarm has gone off");
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

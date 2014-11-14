@@ -4,29 +4,24 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.virginia.cs.edu.politoed.ViewAlarms">
+    android:background="@drawable/appbackground"
+    tools:context="com.example.virginia.cs.edu.politoed.ViewAlarms"
+    android:clickable="true">
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/submitAlarmBtn"
-        android:layout_alignBottom="@+id/alarmTime"
-        android:layout_toRightOf="@+id/alarmTime"
+        android:text="Select Date"
+        android:id="@+id/submitDate"
+        android:onClick="submitDate"
         android:layout_toEndOf="@+id/alarmTime"
-        android:layout_marginLeft="65dp"
-        android:layout_marginBottom="42dp"
-        android:clickable="true"
-        android:enabled="true"
-        android:onClick="submitAlarm" />
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/android:list"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/alarmTime"
-        android:layout_centerHorizontal="true" />
+        android:background="#ff33b5e5"
+        android:textStyle="bold"
+        android:width="120sp"
+        android:layout_below="@+id/datePicker"
+        android:layout_toRightOf="@+id/alarmTime"
+        android:layout_marginLeft="72dp" />
 
     <TimePicker
         android:layout_width="wrap_content"
@@ -34,16 +29,66 @@
         android:id="@+id/alarmTime"
         android:layout_alignTop="@+id/alarmTime"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="58dp"
+        android:paddingTop="50sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="--/--/----"
+        android:id="@+id/datePicker"
+        android:singleLine="false"
+        android:paddingBottom="5dp"
+        android:password="false"
+        android:layout_alignTop="@+id/alarmTime"
+        android:layout_toRightOf="@+id/alarmTime"
+        android:layout_toEndOf="@+id/alarmTime"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="46dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Date"
-        android:id="@+id/submitDate"
-        android:layout_alignBottom="@+id/submitAlarmBtn"
-        android:layout_alignRight="@+id/android:list"
-        android:layout_alignEnd="@+id/android:list"
-        android:onClick="submitDate" />
+        android:text="SUBMIT"
+        android:id="@+id/submitAlarmBtn"
+        android:clickable="true"
+        android:enabled="true"
+        android:onClick="submitAlarm"
+        android:layout_below="@+id/alarmTime"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:width="500dp"
+        android:textStyle="bold"
+        android:background="@android:color/holo_blue_light" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/android:list"
+        android:smoothScrollbar="true"
+        android:layout_below="@+id/submitAlarmBtn"
+        android:layout_alignLeft="@+id/submitAlarmBtn"
+        android:layout_alignStart="@+id/submitAlarmBtn"
+        android:layout_marginTop="67dp"
+        android:layout_alignRight="@+id/submitAlarmBtn"
+        android:layout_alignEnd="@+id/submitAlarmBtn" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Config RPi!"
+        android:id="@+id/configRPiBtn"
+        android:background="@android:color/holo_blue_light"
+        android:textStyle="bold"
+        android:width="120sp"
+        android:layout_above="@+id/submitAlarmBtn"
+        android:layout_alignLeft="@+id/submitDate"
+        android:layout_alignStart="@+id/submitDate"
+        android:textSize="18sp"
+        android:onClick="clickConfigRPi" />
+
 
 </RelativeLayout>

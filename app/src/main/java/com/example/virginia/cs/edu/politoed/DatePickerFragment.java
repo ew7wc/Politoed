@@ -8,17 +8,24 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.provider.CalendarContract;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.Toast;
+import android.widget.TextView;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     public int setYear, setMonth, setDay;
+    TextView datePicker;
+    DateListener listener;
+
+    public interface DateListener{
+        public void returnDate(String date);
+    }
 
     public DatePickerFragment() {
         super();
@@ -26,6 +33,8 @@ public class DatePickerFragment extends DialogFragment
         setYear = g.get(Calendar.YEAR);
         setMonth = g.get(Calendar.MONTH);
         setDay = g.get(Calendar.DAY_OF_MONTH);
+
+
     }
 
     @Override
@@ -35,7 +44,7 @@ public class DatePickerFragment extends DialogFragment
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-
+        listener = (DateListener) getActivity();
         // Create a new instance of DatePickerDialog and return it
         DatePickerDialog dpd = new DatePickerDialog(getActivity(), this, year, month, day);
         dpd.getDatePicker().setCalendarViewShown(false);
@@ -43,10 +52,14 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
         setYear = year;
         setMonth = month;
         setDay = day;
 
+        if (listener != null)
+        {
+            listener.returnDate(String.format("%d/%d/%d", month+1, day, year));
+
+        }
     }
 }

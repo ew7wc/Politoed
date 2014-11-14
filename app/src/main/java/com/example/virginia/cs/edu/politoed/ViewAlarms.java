@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -31,21 +32,19 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import android.app.Fragment;
-public class ViewAlarms extends ListActivity {
+public class ViewAlarms extends ListActivity implements DatePickerFragment.DateListener {
 
     TimePicker alarmTime;
     ArrayList<String> alarms = new ArrayList<String>();
     ArrayAdapter<String> alarmAdapter;
     ListView lv;
-
     DatePickerFragment newFragment = new DatePickerFragment();
 
+    TextView datePicker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_alarms);
-
-
 
         //List set up
         alarmAdapter = new ArrayAdapter <String>(this, R.layout.row_layout_alarmlist, alarms);
@@ -54,18 +53,20 @@ public class ViewAlarms extends ListActivity {
         lv = (ListView) getListView();
         lv.setAdapter(alarmAdapter);
 
+        datePicker = (TextView) findViewById(R.id.datePicker);
 
     }
 
 
-
     //Clicking the set date button
     public void submitDate(View view) {
-
         newFragment.show(getFragmentManager(), "datePicker");
+    }
 
-        //Toast.makeText(getApplicationContext(), "Alarm set for " + year+ ":" + month +":" + day, Toast.LENGTH_LONG).show();
-
+    //Clicking the Config RPi button
+    public void clickConfigRPi(View v) {
+        Intent myIntent = new Intent(ViewAlarms.this, LightUpRPi.class);
+        startActivity(myIntent);
     }
 
     //Clicking the submit alarm button
@@ -73,8 +74,7 @@ public class ViewAlarms extends ListActivity {
         alarmTime = (TimePicker) findViewById(R.id.alarmTime);
         int hour = alarmTime.getCurrentHour();
         int min = alarmTime.getCurrentMinute();
-        //Toast toast = Toast.makeText(getApplicationContext(), "Alarm set for " + hour + ":" + min, Toast.LENGTH_LONG);
-        //toast.show();
+
         //Populate the list view
         //convert time to 12 hr time
         String AM_PM = "AM";
@@ -84,11 +84,10 @@ public class ViewAlarms extends ListActivity {
         }
 
         //Add to list
-        alarmAdapter.add(String.format("%d/%d/%d %d:%02d %s", newFragment.setMonth, newFragment.setDay, newFragment.setYear, hour, min, AM_PM));
-
+        alarmAdapter.add(String.format("%d/%d/%d %d:%02d %s", newFragment.setMonth +1, newFragment.setDay, newFragment.setYear, hour, min, AM_PM));
         //Setting up alarm
-        Long time = new GregorianCalendar(newFragment.setYear, newFragment.setMonth + 1, newFragment.setDay, alarmTime.getCurrentHour(),min).getTimeInMillis();
-        Toast.makeText(getApplicationContext(), "Alarm set for " + newFragment.setYear + ":" + newFragment.setMonth +":" + newFragment.setDay, Toast.LENGTH_LONG).show();
+        Long time = new GregorianCalendar(newFragment.setYear, newFragment.setMonth, newFragment.setDay, alarmTime.getCurrentHour(),min).getTimeInMillis();
+        //Toast.makeText(getApplicationContext(), "Alarm set for " + newFragment.setYear + "/" + newFragment.setMonth +"/" + newFragment.setDay, Toast.LENGTH_LONG).show();
         //Long time = new GregorianCalendar().getTimeInMillis()+10000;
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -97,8 +96,6 @@ public class ViewAlarms extends ListActivity {
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,6 +119,9 @@ public class ViewAlarms extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void returnDate(String date) {
 
-
+        datePicker.setText(date);
+    }
 }
