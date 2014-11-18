@@ -24,5 +24,20 @@
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_all_alarms">AllAlarms</string>
+    <string name="action_add">Add Alarm</string>
+    <string-array name="category_array">
+        <item>Miscellaneous</item>
+        <item>Class</item>
+        <item>Errands</item>
+        <item>Fitness</item>
+        <item>Meeting</item>
+        <item>Social</item>
+    </string-array>
+    <string-array name="priority_array">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
 
 </resources>

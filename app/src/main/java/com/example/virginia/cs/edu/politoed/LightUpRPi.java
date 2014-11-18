@@ -123,6 +123,11 @@ public class LightUpRPi extends Activity {
         };
 
         t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

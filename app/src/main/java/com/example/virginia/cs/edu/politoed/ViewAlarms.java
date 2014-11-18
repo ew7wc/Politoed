@@ -94,7 +94,6 @@ public class ViewAlarms extends ListActivity implements DatePickerFragment.DateL
         am.set(AlarmManager.RTC_WAKEUP, time, PendingIntent.getBroadcast(this, 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
         Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_LONG).show();
 
-
     }
 
     @Override

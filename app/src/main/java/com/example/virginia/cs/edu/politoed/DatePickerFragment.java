@@ -58,7 +58,7 @@ public class DatePickerFragment extends DialogFragment
 
         if (listener != null)
         {
-            listener.returnDate(String.format("%d/%d/%d", month+1, day, year));
+            listener.returnDate(String.format("%d-%d-%d", month+1, day, year));
 
         }
     }

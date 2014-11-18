@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "AlarmApp";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3;
 
     private static final String TABLE_ALARMS = "Alarms";
     private static final String FIELD_ID = "id";
@@ -40,9 +40,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String FIELD_CATEGORY = "category";
     private static final String FIELD_PRIORITY = "priority";
     private static final String FIELD_NOTES = "notes";
+    private static final String FIELD_TWITTER = "twitter";
     private static final String[] FIELDS = {
             FIELD_ID, FIELD_NAME, FIELD_DATEYEAR, FIELD_DATEMONTH, FIELD_DATEDAY,
-            FIELD_TIMEHOUR, FIELD_TIMEMINUTE, FIELD_CATEGORY, FIELD_PRIORITY, FIELD_NOTES
+            FIELD_TIMEHOUR, FIELD_TIMEMINUTE, FIELD_CATEGORY, FIELD_PRIORITY, FIELD_NOTES, FIELD_TWITTER
     };
 
     public DatabaseHelper(Context context) {
@@ -52,11 +53,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String queryFmt = "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, " +
-                "%s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, " +
-                "%s INTEGER, %s TEXT);";
+                "%s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, " +
+                "%s TEXT, %s TEXT, %s INTEGER);";
         String query = String.format(queryFmt, TABLE_ALARMS, FIELD_ID, FIELD_NAME, FIELD_DATEYEAR,
                 FIELD_DATEMONTH, FIELD_DATEDAY, FIELD_TIMEHOUR, FIELD_TIMEMINUTE, FIELD_CATEGORY,
-                FIELD_PRIORITY, FIELD_NOTES);
+                FIELD_PRIORITY, FIELD_NOTES, FIELD_TWITTER);
         db.execSQL(query);
     }
 
@@ -73,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void addAlarm(Alarm alarm) {
+    public int addAlarm(Alarm alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -86,8 +87,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_CATEGORY, alarm.getCategory());
         values.put(FIELD_PRIORITY, alarm.getPriority());
         values.put(FIELD_NOTES, alarm.getNotes());
+        values.put(FIELD_TWITTER, alarm.getTwitter());
 
-        db.insert(TABLE_ALARMS, null, values);
+        return (int) db.insert(TABLE_ALARMS, null, values);
+
     }
 
     public Alarm getAlarm(int id) {
@@ -103,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         } else {
             return new Alarm(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4),
-                    c.getInt(5), c.getInt(6), c.getInt(7), c.getInt(8), c.getString(9));
+                    c.getInt(5), c.getInt(6), c.getString(7), c.getString(8), c.getString(9), c.getInt(10));
         }
     }
 
@@ -112,20 +115,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String[] selection = {
                 FIELD_ID, FIELD_NAME, FIELD_DATEYEAR, FIELD_DATEMONTH, FIELD_DATEDAY,
-                FIELD_TIMEHOUR, FIELD_TIMEMINUTE, FIELD_CATEGORY, FIELD_PRIORITY, FIELD_NOTES
+                FIELD_TIMEHOUR, FIELD_TIMEMINUTE, FIELD_CATEGORY, FIELD_PRIORITY, FIELD_NOTES, FIELD_TWITTER
         };
 
         String query = String.format("SELECT * FROM %s;", TABLE_ALARMS);
         Cursor c = db.rawQuery(query, null);
 
         if (c == null || !c.moveToFirst()) {
-            return null;
+            return new ArrayList<Alarm>();
         } else {
             List<Alarm> result = new ArrayList<Alarm>();
             do {
                 Alarm alarm = new Alarm(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3),
-                        c.getInt(4), c.getInt(5), c.getInt(6), c.getInt(7), c.getInt(8),
-                        c.getString(9));
+                        c.getInt(4), c.getInt(5), c.getInt(6), c.getString(7), c.getString(8),
+                        c.getString(9), c.getInt(10));
                 result.add(alarm);
             } while (c.moveToNext());
             return result;
@@ -153,15 +156,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_CATEGORY, alarm.getCategory());
         values.put(FIELD_PRIORITY, alarm.getPriority());
         values.put(FIELD_NOTES, alarm.getNotes());
-
+        values.put(FIELD_TWITTER, alarm.getTwitter());
         String[] selectionArgs = {String.valueOf(alarm.getId())};
         return db.update(TABLE_ALARMS, values, String.format("%s=?", FIELD_ID), selectionArgs);
     }
 
-    public void deleteAlarm(Alarm alarm) {
+    public void deleteAlarm(int alarmID) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String[] selectionArgs = {String.valueOf(alarm.getId())};
+        String[] selectionArgs = {String.valueOf(alarmID)};
         db.delete(TABLE_ALARMS, String.format("%s=?", FIELD_ID), selectionArgs);
     }
 }
