@@ -214,6 +214,7 @@ public class AlarmLockScreen extends Activity {
         Intent i = getIntent();
         alarmID = i.getIntExtra("alarmID", -1);
 
+        sendJson(makeJSONString());
     }
 
     public void closeAlarmLockScreen(View v) {
@@ -304,58 +305,17 @@ public class AlarmLockScreen extends Activity {
         }
         db.deleteAlarm(alarmID);
         finish();
+        sendJson(clearLEDs());
     }
 
-    public void sendRequest(View view) {
+    protected void sendJson(final String jsonString) {
         //Code to get the IP address out from settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String IP = preferences.getString("example_text", "NA");
-        Toast.makeText(getBaseContext(), IP, Toast.LENGTH_LONG)
-                .show();
-        Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
+
+        final String url = "http://" + IP + "/rpi";
 
 
-        String url = "http://" + IP + "/rpi";
-
-        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
-
-        JSONObject json = new JSONObject();
-        JSONArray arr = new JSONArray();
-
-        JSONObject arrayElement1 = new JSONObject();
-        JSONObject arrayElement2 = new JSONObject();
-        JSONObject arrayElement3 = new JSONObject();
-        try {
-            arrayElement1.put("lightId", 0);
-            arrayElement1.put("red", 255);
-            arrayElement1.put("green", 0);
-            arrayElement1.put("blue", 0);
-            arrayElement1.put("intensity", .3);
-            arr.put(arrayElement1);
-
-            arrayElement2.put("lightId", 2);
-            arrayElement2.put("red", 0);
-            arrayElement2.put("green", 255);
-            arrayElement2.put("blue", 0);
-            arrayElement2.put("intensity", .3);
-            arr.put(arrayElement2);
-
-            arrayElement3.put("lightId", 22);
-            arrayElement3.put("red", 0);
-            arrayElement3.put("green", 0);
-            arrayElement3.put("blue", 255);
-            arrayElement3.put("intensity", .3);
-            arr.put(arrayElement3);
-            json.put("lights", arr);
-            json.put("propagate", true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        sendJson(json, url);
-    }
-
-    protected void sendJson(final JSONObject json, final String url) {
         Thread t = new Thread() {
 
             public void run() {
@@ -366,12 +326,10 @@ public class AlarmLockScreen extends Activity {
 
                 try {
                     HttpPost post = new HttpPost(url);
-                    StringEntity se = new StringEntity(json.toString());
+                    StringEntity se = new StringEntity(jsonString);
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     post.setEntity(se);
-
                     response = client.execute(post);
-
                     /*Checking response */
                     if(response!=null){
                         InputStream in = response.getEntity().getContent(); //Get the data in the entity
@@ -387,12 +345,49 @@ public class AlarmLockScreen extends Activity {
                 Looper.loop(); //Loop in the message queue
             }
         };
-
         t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
+
+    protected String makeJSONString() {
+        db = new DatabaseHelper(getApplicationContext());
+        Alarm a = db.getAlarm(alarmID);
+        String prior = a.getPriority();
+        String category = a.getCategory();
+        String jsonString;
+        String priorityNum;
+        if (prior.equals("Low")) {
+            priorityNum = "0.15";
+        }
+        else if (prior.equals("Medium")) {
+            priorityNum = "0.5";
+        }
+        else {
+            priorityNum = "1.0";
+        }
+
+        if (category.equals("Miscellaneous")) {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":0,\"green\":191,\"blue\":255, \"intensity\": " + priorityNum + "}],  \"propagate\": true } ";
+        }
+        else if (category.equals("Class")) {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":255,\"green\":255,\"blue\":0, \"intensity\": "+ priorityNum + "}],  \"propagate\": true } ";
+        }
+        else if (category.equals("Errands")) {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":0,\"green\":255,\"blue\":127, \"intensity\": " + priorityNum + "}],  \"propagate\": true } ";
+        }
+        else if (category.equals("Fitness")) {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":138,\"green\":43,\"blue\":226, \"intensity\": " + priorityNum + "}],  \"propagate\": true } ";
+        }
+        else if (category.equals("Meeting")) {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":255,\"green\":140,\"blue\":0, \"intensity\": " + priorityNum + "}],  \"propagate\": true } ";
+        }
+        else {
+            jsonString = "{ \"lights\": [  {\"lightId\": 1, \"red\":255,\"green\":105,\"blue\":180, \"intensity\": " + priorityNum + "}],  \"propagate\": true } ";
+        }
+        return jsonString;
+    }
+
+    private String clearLEDs() {
+        return "{ \"lights\": [  {\"lightId\": 1, \"red\":255,\"green\":105,\"blue\":180, \"intensity\": " + 0 + "}],  \"propagate\": true } ";
+    }
+
 }
