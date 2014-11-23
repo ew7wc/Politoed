@@ -7,29 +7,59 @@
     android:background="@drawable/appbackground"
     tools:context="com.example.virginia.cs.edu.politoed.SetAlarm">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date:"
-        android:id="@+id/dateLabel"
-        android:layout_marginTop="42dp"
-        android:textSize="24sp"
-        android:layout_below="@+id/timePicker"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Name:  "
-        android:id="@+id/taskName"
+        android:text="Time:"
+        android:id="@+id/timeLabel"
+        android:textStyle="bold"
         android:textSize="24sp"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/categoryList"
+        android:layout_alignTop="@+id/timePicker"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:layout_marginTop="50dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmDate"
+        android:hint="Click to set date"
+        android:textStyle="bold"
+        style="@android:style/Widget.Holo.Spinner"
+        android:clickable="true"
+        android:onClick="onClickSetDate"
+        android:layout_marginRight="47dp"
+        android:layout_alignBaseline="@+id/timeLabel"
+        android:layout_alignBottom="@+id/timeLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColorHint="#FFFFFF"/>
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:layout_toEndOf="@+id/timeLabel"
+        android:layout_marginLeft="26dp"
+        android:layout_alignTop="@+id/timePicker"
+        android:layout_toRightOf="@+id/timeLabel" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTaskName"
+        android:hint="Enter Your Task Name"
+        android:textStyle="bold"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="51dp"
+        android:autoText="false"
+        android:textColorHint="#FFFFFF"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,11 +67,23 @@
         android:text="Category:"
         android:id="@+id/Category"
         android:textSize="24sp"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/priorityPicker"
+        android:layout_marginTop="39dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/editTaskName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:singleLine="true" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/categoryList"
+        android:labelFor="@id/Category"
+        android:spinnerMode="dropdown"
+        android:clickable="true"
+        android:layout_toEndOf="@+id/Category"
+        android:layout_alignTop="@+id/Category"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,38 +91,21 @@
         android:text="Priority:"
         android:id="@+id/Priority"
         android:textSize="24sp"
-        android:layout_marginTop="58dp"
-        android:layout_below="@+id/dateLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notes (Optional):"
-        android:id="@+id/notes"
-        android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_below="@+id/editTaskName"
-        android:layout_toRightOf="@+id/categoryList"
-        android:layout_toEndOf="@+id/categoryList"
-        android:layout_marginTop="69dp" />
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/categoryList"
+        android:layout_alignRight="@+id/Category"
+        android:layout_alignEnd="@+id/Category" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send to Twitter?"
-        android:id="@+id/twitterLabel"
-        android:textSize="24sp"
-        android:layout_toStartOf="@+id/editTaskName"
-        android:layout_marginBottom="40dp"
-        android:textStyle="bold"
-        android:layout_above="@+id/submitAlarmBtn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/alarmDate"
-        android:layout_alignEnd="@+id/alarmDate" />
+        android:id="@+id/priorityPicker"
+        android:clickable="true"
+        android:labelFor="@id/Priority"
+        android:layout_alignTop="@+id/Priority"
+        android:layout_toRightOf="@+id/Category"
+        android:layout_toEndOf="@+id/Category" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -89,64 +114,39 @@
         android:ems="10"
         android:id="@+id/editNotes"
         android:editable="true"
-        android:labelFor="@id/notes"
-        android:hint="Enter notes about your task here."
-        android:layout_below="@+id/notes"
+        android:hint="Enter Notes About Your Task Here"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:longClickable="false"
+        android:layout_below="@+id/twitterToggle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTaskName"
-        android:layout_toEndOf="@+id/taskName"
-        android:hint="Enter your task name."
-        android:layout_alignTop="@+id/taskName"
-        android:layout_toRightOf="@+id/taskName"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/categoryList"
-        android:layout_toEndOf="@+id/taskName"
-        android:labelFor="@id/Category"
-        android:spinnerMode="dropdown"
-        android:clickable="true"
-        android:layout_alignTop="@+id/Category"
-        android:layout_alignRight="@+id/timePicker"
-        android:layout_alignEnd="@+id/timePicker"
-        android:layout_toRightOf="@+id/taskName" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/priorityPicker"
-        android:layout_alignTop="@+id/Priority"
-        android:layout_alignLeft="@+id/categoryList"
-        android:layout_alignStart="@+id/categoryList"
-        android:clickable="true"
-        android:labelFor="@id/Priority"
-        android:layout_alignRight="@+id/categoryList"
-        android:layout_alignEnd="@+id/categoryList" />
+        android:layout_alignRight="@+id/priorityPicker"
+        android:layout_alignEnd="@+id/priorityPicker"
+        android:scrollbars = "vertical"
+        android:lines="2"
+        android:textColorHint="#FFFFFF"/>
 
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/twitterToggle"
-        android:layout_toEndOf="@+id/notes"
-        android:layout_above="@+id/submitAlarmBtn"
-        android:layout_centerHorizontal="true" />
+        android:layout_toEndOf="@+id/editTaskName"
+        android:layout_toStartOf="@+id/alarmDate"
+        android:textOn="Send to Twitter!"
+        android:textOff="Do not send to Twitter"
+        android:layout_marginTop="54dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/priorityPicker"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
         android:id="@+id/submitAlarmBtn"
-        android:layout_toEndOf="@+id/twitterToggle"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -154,40 +154,6 @@
         android:onClick="onClickSubmit"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time:"
-        android:id="@+id/textView3"
-        android:layout_alignBottom="@+id/timePicker"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="33dp"
-        android:textStyle="bold"
-        android:textSize="24sp" />
-
-    <TimePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
-        android:layout_toEndOf="@+id/Priority"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/Priority" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarmDate"
-        android:hint="Click to set date"
-        android:textStyle="bold"
-        android:layout_toEndOf="@+id/textView3"
-        style="@android:style/Widget.Holo.Spinner"
-        android:layout_above="@+id/Priority"
-        android:layout_alignLeft="@+id/timePicker"
-        android:layout_alignStart="@+id/timePicker"
-        android:clickable="true"
-        android:onClick="onClickSetDate" />
 
 
 </RelativeLayout>

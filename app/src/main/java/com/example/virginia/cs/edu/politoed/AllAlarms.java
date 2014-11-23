@@ -3,9 +3,7 @@ package com.example.virginia.cs.edu.politoed;
 import com.example.virginia.cs.edu.politoed.adapters.ExpandableListAdapter;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.ArrayList;
@@ -13,10 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class AllAlarms extends Activity {
@@ -25,84 +21,70 @@ public class AllAlarms extends Activity {
     private Map<String, List<String>> alarmCollection;
     private ExpandableListView expListView;
     private DatabaseHelper db;
-    private ImageButton editAlarmBtn;
     private List<String> titleList;
+    private ExpandableListAdapter expListAdapter;
+    private List<Integer> alarmIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_alarms);
-
         db = new DatabaseHelper(getApplicationContext());
-
         createGroupList();
-
-        //createCollection();
-
-
-        //Code to get the IP address out from settings
-        /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String IP = preferences.getString("example_text", "NA");
-        Toast.makeText(getBaseContext(), IP, Toast.LENGTH_LONG)
-                .show();*/
     }
 
-
-    private void createGroupList() {
+    protected void createGroupList() {
         alarmCollection = new LinkedHashMap<String, List<String>>();
-        //editAlarmBtn = (ImageButton) findViewById(R.id.editAlarmBtn);
-        //editAlarmBtn.setFocusable(false);
-
         groupList = new ArrayList<Alarm>();
         titleList = new ArrayList<String>();
-        //TODO fetch from DB....
         groupList = db.getAllAlarms();
+        alarmIDs = new ArrayList<Integer>();
 
+        for (int i = 0; i < groupList.size(); i++) {
+            String title = groupList.get(i).getFormattedTime() + " " + groupList.get(i).getName();
+            titleList.add(title);
+            alarmIDs.add(groupList.get(i).getId());
+            createCollection(groupList.get(i), title);
+        }
 
-            //Currently are placeholders
-            for (int i = 0; i < groupList.size(); i++) {
-                String title = groupList.get(i).getFormattedTime() + " " + groupList.get(i).getName();
-                titleList.add(title);
-                createCollection(groupList.get(i), title);
+        expListView = (ExpandableListView) findViewById(R.id.alarm_list);
+        expListAdapter = new ExpandableListAdapter(this, titleList, alarmCollection,alarmIDs);
+        expListView.setAdapter(expListAdapter);
+        expListView.setOnChildClickListener(new OnChildClickListener() {
 
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
+                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                        .show();
+
+                return true;
             }
+        });
+        //Toast.makeText(getApplicationContext(), expListAdapter.getGroup(0).toString(), Toast.LENGTH_LONG);
 
-
-            expListView = (ExpandableListView) findViewById(R.id.alarm_list);
-            final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-                    this, titleList, alarmCollection);
-            expListView.setAdapter(expListAdapter);
-
-
-            expListView.setOnChildClickListener(new OnChildClickListener() {
-
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-
-                    final String selected = (String) expListAdapter.getChild(
-                            groupPosition, childPosition);
-                    Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                            .show();
-
-                    return true;
-                }
-            });
 
 
     }
 
-    private void createCollection(Alarm a, String title) {
-        // preparing laptops collection(child)
-        String[] alarm1 = {"Date: " + a.getFormattedDate(), "Notes: " + a.getNotes(), "Category: "  + a.getCategory()};
-        alarmCollection.put(title, loadChild(alarm1));
+    protected void createCollection(Alarm a, String title) {
+        String sendTweet;
+        if (a.getTwitter()==1) {
+            sendTweet = "Yes";
+        }
+        else {
+            sendTweet = "No";
+        }
+        String[] alarm1 = {"Set for Date: " + a.getFormattedDate(), "Category: "  + a.getCategory(), "Priority: " + a.getPriority(), "Notes: " + a.getNotes(), "Send to Twitter? " + sendTweet};
 
+        alarmCollection.put(title, loadChild(alarm1));
     }
 
     private ArrayList<String> loadChild(String[] alarmInfo) {
         ArrayList<String> cl = new ArrayList<String>();
-
         for (String info : alarmInfo)
-            //childList.add(info);
             cl.add(info);
         return cl;
     }

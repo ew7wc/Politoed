@@ -18,4 +18,12 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <Preference
+        android:key="twitter_login"
+        android:title="Log in to Twitter" >
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.virginia.cs.edu.politoed"
+            android:targetClass="com.example.virginia.cs.edu.politoed.OAuth"/>
+    </Preference>
+
 </PreferenceScreen>

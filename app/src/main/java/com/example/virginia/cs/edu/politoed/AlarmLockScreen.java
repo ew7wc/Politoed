@@ -21,6 +21,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -68,6 +70,9 @@ public class AlarmLockScreen extends Activity {
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {
+            if (se.values == null || se.values.length < 3) {
+                return;
+            }
             float x = se.values[0];
             float y = se.values[1];
             float z = se.values[2];
@@ -80,7 +85,6 @@ public class AlarmLockScreen extends Activity {
                 //toast.show();
                 // 1. Instantiate an AlertDialog.Builder with its constructor
                 /*AlertDialog.Builder builder = new AlertDialog.Builder(AlarmLockScreen.this);
-
                 // 2. Chain together various setter methods to set the dialog characteristics
                 builder.setMessage("You shook your device!").setTitle("Device shake detected.");
                 // Add the buttons
@@ -141,6 +145,12 @@ public class AlarmLockScreen extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_alarm_lock_screen);
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                + WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                + WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                + WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -266,46 +276,65 @@ public class AlarmLockScreen extends Activity {
     }
 
     public void postTweet(String tweet) {
-        String token = "2229159438-U33SEv3xfAxLg81vmxankHC8Q2CFGDCtEEWRjwp";
-        String tokenSecret = "s5Zr3JN1MAJVq7e6ZQKnQE6Q1csPIriMOtVtNc83udtpA";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         String consumerKey = "LedH6x4GwAKHZeA4gSak5BI0z";
         String consumerSecret = "kpN6DAJfB8tkzG72zfL2FJOV6VqO8gj90lHdUFUXw0a6w7jemQ";
 
-        AccessToken accessToken = new AccessToken(token, tokenSecret);
-        Twitter twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
-        twitter.setOAuthAccessToken(accessToken);
+        String token, tokenSecret;
+        token = preferences.getString("oauth_token", "");
+        tokenSecret = preferences.getString("oauth_token_secret", "");
 
-        try {
-            twitter.updateStatus(tweet);
-        } catch (TwitterException e) {
-            e.printStackTrace();
+        if (token.isEmpty() || tokenSecret.isEmpty()) {
+            Toast.makeText(getApplicationContext(),
+                    "Twitter credentials not found (remember to log in first).",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            AccessToken accessToken = new AccessToken(token, tokenSecret);
+            Twitter twitter = new TwitterFactory().getInstance();
+            twitter.setOAuthConsumer(consumerKey, consumerSecret);
+            twitter.setOAuthAccessToken(accessToken);
+
+            try {
+                twitter.updateStatus(tweet);
+            } catch (TwitterException e) {
+            }
         }
     }
+
+    private String formatTweet(String taskName) {
+        if (taskName.isEmpty()) {
+            return "I just finished a task with my awesome #AlarmApp!";
+        } else {
+            return String.format(
+                    "I just finished %s with my awesome #AlarmApp!",
+                    taskName);
+        }
+    }
+
     public void onTweetPressed(final String taskName) {
         Thread t = new Thread() {
             public void run() {
-                postTweet(taskName);
+                postTweet(formatTweet(taskName));
             }
         };
         t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void stopAlarm() {
-        db = new DatabaseHelper(getApplicationContext());
-        Alarm a = db.getAlarm(alarmID);
-        Toast.makeText(getApplicationContext(), "Tweeting? "+ alarmID, Toast.LENGTH_LONG).show();
-        if (a.getTwitter() == 1) {
-            onTweetPressed(a.getName());
+        if (db == null) {
+            db = new DatabaseHelper(getApplicationContext());
         }
-        db.deleteAlarm(alarmID);
-        finish();
+
+        Alarm a = db.getAlarm(alarmID);
+        if (a != null) {
+            if (a.getTwitter() == 1) {
+                onTweetPressed(a.getName());
+            }
+            db.deleteAlarm(alarmID);
+        }
         sendJson(clearLEDs());
+        finish();
     }
 
     protected void sendJson(final String jsonString) {
@@ -314,7 +343,6 @@ public class AlarmLockScreen extends Activity {
         String IP = preferences.getString("example_text", "NA");
 
         final String url = "http://" + IP + "/rpi";
-
 
         Thread t = new Thread() {
 
@@ -337,9 +365,6 @@ public class AlarmLockScreen extends Activity {
                     }
 
                 } catch(Exception e) {
-                    e.printStackTrace();
-
-                    Log.e("Error", "Cannot Establish Connection");
                 }
 
                 Looper.loop(); //Loop in the message queue

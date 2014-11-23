@@ -1,24 +1,26 @@
-package com.example.virginia.cs.edu.politoed;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
+        package com.example.virginia.cs.edu.politoed;
+
+        import android.annotation.TargetApi;
+        import android.content.Context;
+        import android.content.SharedPreferences;
+        import android.content.res.Configuration;
+        import android.media.Ringtone;
+        import android.media.RingtoneManager;
+        import android.net.Uri;
+        import android.os.Build;
+        import android.os.Bundle;
+        import android.preference.ListPreference;
+        import android.preference.Preference;
+        import android.preference.PreferenceActivity;
+        import android.preference.PreferenceCategory;
+        import android.preference.PreferenceFragment;
+        import android.preference.PreferenceManager;
+        import android.preference.RingtonePreference;
+        import android.text.TextUtils;
 
 
-import java.util.List;
+        import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -81,6 +83,15 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("example_text"));
         bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+
+        Preference pref = findPreference("twitter_login");
+        if (pref != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String name = prefs.getString("twitter_name", "");
+            if (!name.isEmpty()) {
+                pref.setSummary("Currently logged in as: " + name);
+            }
+        }
     }
 
     /**

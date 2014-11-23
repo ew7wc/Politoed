@@ -39,5 +39,5 @@
         <item>Medium</item>
         <item>High</item>
     </string-array>
-
+    <string name="title_activity_oauth">OAuth</string>
 </resources>
