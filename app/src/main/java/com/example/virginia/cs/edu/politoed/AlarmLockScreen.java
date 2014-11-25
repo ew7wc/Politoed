@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -140,11 +141,17 @@ public class AlarmLockScreen extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+
+    private TextView alarmInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_alarm_lock_screen);
+
+        //alarmInfo.setText();
+
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
@@ -223,7 +230,10 @@ public class AlarmLockScreen extends Activity {
 
         Intent i = getIntent();
         alarmID = i.getIntExtra("alarmID", -1);
-
+        db = new DatabaseHelper(getApplicationContext());
+        Alarm a = db.getAlarm(alarmID);
+        alarmInfo = (TextView) findViewById(R.id.alarmInfo);
+        alarmInfo.setText(a.getName() + " is now due!");
         sendJson(makeJSONString());
     }
 
@@ -297,7 +307,7 @@ public class AlarmLockScreen extends Activity {
 
             try {
                 twitter.updateStatus(tweet);
-            } catch (TwitterException e) {
+            } catch (Exception e) {
             }
         }
     }

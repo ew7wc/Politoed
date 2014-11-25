@@ -38,6 +38,4 @@ public class AlarmReceiver extends BroadcastReceiver {
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
-
-
 }

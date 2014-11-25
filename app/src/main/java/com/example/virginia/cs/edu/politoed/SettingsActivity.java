@@ -10,6 +10,7 @@
         import android.net.Uri;
         import android.os.Build;
         import android.os.Bundle;
+        import android.preference.EditTextPreference;
         import android.preference.ListPreference;
         import android.preference.Preference;
         import android.preference.PreferenceActivity;
@@ -42,6 +43,11 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+
+    /*protected void onResume() {
+        super.onResume();
+
+    }*/
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -91,6 +97,7 @@ public class SettingsActivity extends PreferenceActivity {
             if (!name.isEmpty()) {
                 pref.setSummary("Currently logged in as: " + name);
             }
+
         }
     }
 
@@ -225,6 +232,11 @@ public class SettingsActivity extends PreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
+
+            //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+
         }
     }
 
@@ -246,4 +258,6 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         }
     }
+
+
 }

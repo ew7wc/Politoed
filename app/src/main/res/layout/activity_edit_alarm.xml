@@ -3,71 +3,69 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context="com.example.virginia.cs.edu.politoed.SetAlarm">
+    tools:context="com.example.virginia.cs.edu.politoed.EditAlarm">
 
 <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="30dp"
-    android:weightSum="1">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="30dp">
 
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/editTime"
+        android:layout_gravity="center_horizontal" />
 
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/setDate"
+        android:id="@+id/editDate"
         android:layout_gravity="center_horizontal"
         android:calendarViewShown="false"/>
 
     <EditText
-        android:layout_width="528dp"
-        android:layout_height="wrap_content"
         android:id="@+id/editTaskName"
-        android:hint="Enter Your Task Name"
-        android:textStyle="bold"
-        android:layout_marginTop="51dp"
-        android:textColorHint="#FFFFFF"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_gravity="center"
         android:maxLength="30"
-        android:imeOptions="actionDone"
-        android:singleLine="true"/>
+        android:imeOptions="actionDone"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/categoryList"
-        android:spinnerMode="dropdown"
-        android:clickable="true" />
+        android:id="@+id/editCategory"
+        android:layout_gravity="center"
+        android:clickable="true"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/priorityPicker"
+        android:id="@+id/editPriority"
+        android:layout_gravity="center"
         android:clickable="true"/>
 
     <ToggleButton
-        android:layout_width="match_parent"
+        android:layout_width="592dp"
         android:layout_height="wrap_content"
-        android:id="@+id/twitterToggle"
-        android:textOn="Send to Twitter!"
+        android:id="@+id/editTweet"
         android:textOff="Do not send to Twitter"
-        android:textStyle="bold" />
+        android:textOn="Send to Twitter"
+        android:layout_gravity="center"/>
 
     <EditText
+        android:id="@+id/editNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine|textCapSentences"
-        android:id="@+id/editNotes"
-        android:hint="Enter Notes About Your Task Here"
-        android:textStyle="bold"
-        android:scrollbars = "vertical"
+        android:layout_gravity="center"
         android:lines="2"
-        android:textColorHint="#FFFFFF"/>
+        android:inputType="textMultiLine|textCapSentences"/>
 
     <Space
         android:layout_width="match_parent"
@@ -78,11 +76,10 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/submitAlarmBtn"
+        android:text="Update Alarm"
+        android:id="@+id/updateAlarmBtn"
         android:textStyle="bold"
-        android:onClick="onClickSubmit" />
+        android:onClick="onClickUpdate" />
 
 </LinearLayout>
-
-</ScrollView>
+    </ScrollView>

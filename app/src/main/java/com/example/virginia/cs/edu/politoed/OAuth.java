@@ -34,9 +34,11 @@ public class OAuth extends Activity {
             preferences = PreferenceManager.getDefaultSharedPreferences(this);
         }
 
-        if (handleCallback()) {
+        int i = handleCallback();
+
+        if (i == 1 || i == -1) {
             finish();
-        } else {
+        } else if (i == 0) {
             authorizeApp();
             finish();
         }
@@ -74,14 +76,14 @@ public class OAuth extends Activity {
             configurationBuilder.setOAuthConsumerSecret(consumerSecret);
             Configuration configuration = configurationBuilder.build();
 
-
             twitter = new TwitterFactory(configuration).getInstance();
-
         }
 
         Thread t = new Thread() {
             public void run() {
+
                 try {
+                    twitter.setOAuthAccessToken(null);
                     requestToken = twitter.getOAuthRequestToken("oauth://alarmapp");
                 } catch (TwitterException e) {
                     e.printStackTrace();
@@ -92,21 +94,27 @@ public class OAuth extends Activity {
         try {
             t.join();
         } catch (Exception e) {
-
+            return;
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL()));
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(requestToken.getAuthenticationURL()));
         this.startActivity(intent);
     }
 
-    private boolean handleCallback() {
+    private int handleCallback() {
         Uri uri = getIntent().getData();
 
         if (uri == null || !uri.toString().startsWith("oauth://alarmapp")) {
-            return false;
+            return 0;
         }
 
         final String verifier = uri.getQueryParameter("oauth_verifier");
+
+        if (verifier == null) {
+            finish();
+            return -1;
+        }
 
         Thread t = new Thread() {
             public void run() {
@@ -121,11 +129,11 @@ public class OAuth extends Activity {
         try {
             t.join();
         } catch (Exception e) {
-            return false;
+            return 0;
         }
 
         if (accessToken == null) {
-            return false;
+            return 0;
         }
 
         SharedPreferences.Editor e = preferences.edit();
@@ -135,6 +143,6 @@ public class OAuth extends Activity {
         e.putString("twitter_name",
                 accessToken.getScreenName());
         e.commit();
-        return true;
+        return 1;
     }
 }

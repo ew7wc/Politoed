@@ -18,14 +18,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.virginia.cs.edu.politoed.Alarm;
 import com.example.virginia.cs.edu.politoed.AlarmReceiver;
 import com.example.virginia.cs.edu.politoed.DatabaseHelper;
+import com.example.virginia.cs.edu.politoed.EditAlarm;
 import com.example.virginia.cs.edu.politoed.R;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -149,17 +156,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         item.setTypeface(null, Typeface.BOLD);
         item.setText(getGroup(groupPosition).toString());
 
-       /* Button editAlarmInfo = (Button) convertView.findViewById(R.id.editAlarmBtn);
-        editAlarmInfo.setFocusable(false);
-        //editAlarmInfo.setClickable(true);
+        ImageButton editAlarmInfo = (ImageButton) convertView.findViewById(R.id.editAlarmBtn);
+
         editAlarmInfo.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("EDIT CLICKED", "edit button clicked");
-                Toast.makeText(v.getContext(), "edit clicked", Toast.LENGTH_LONG);
-            }
-        }); */
+                //Get the alarm ID, make a database call, populate the fields in the dialog box
+                int alarmID = alarmIDs.get(groupPosition);
+                //Toast.makeText(v.getContext(), "#: " + alarmID, Toast.LENGTH_LONG).show();
 
+                //pass the alarm to the update alarm activity .. populate the fields.
+                Intent i = new Intent(v.getContext(), EditAlarm.class);
+                i.putExtra("alarmID", alarmID);
+                v.getContext().startActivity(i);
+
+            }
+        });
+        editAlarmInfo.setFocusable(false);
 
 
         return convertView;

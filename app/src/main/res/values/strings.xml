@@ -26,7 +26,9 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_all_alarms">AllAlarms</string>
     <string name="action_add">Add Alarm</string>
+
     <string-array name="category_array">
+        <item>Select a category...</item>
         <item>Miscellaneous</item>
         <item>Class</item>
         <item>Errands</item>
@@ -35,9 +37,13 @@
         <item>Social</item>
     </string-array>
     <string-array name="priority_array">
+        <item>Select a priority...</item>
         <item>Low</item>
         <item>Medium</item>
         <item>High</item>
     </string-array>
+
     <string name="title_activity_oauth">OAuth</string>
+    <string name="title_activity_edit_alarm">EditAlarm</string>
+
 </resources>

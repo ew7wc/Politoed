@@ -18,57 +18,48 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-        <!--
-        <activity
-            android:name="com.example.virginia.cs.edu.politoed.ViewAlarms"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
-        <activity
-            android:name="com.example.virginia.cs.edu.politoed.LightUpRPi"
-            android:label="@string/app_name" >
-        </activity>
         <activity
             android:name="com.example.virginia.cs.edu.politoed.SetAlarm"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="com.example.virginia.cs.edu.politoed.AllAlarms" >
+            android:label="New Alarm"
+            android:parentActivityName="com.example.virginia.cs.edu.politoed.AllAlarms"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize">
 
             <!-- Parent activity meta-data to support API level 7+ -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.virginia.cs.edu.politoed.AllAlarms" />
         </activity>
-        <activity
-            android:name="com.example.virginia.cs.edu.politoed.OneAlarm"
-            android:label="@string/title_activity_one_alarm" >
-        </activity>
+
 
         <!-- Register the Alarm Receiver -->
         <receiver android:name="com.example.virginia.cs.edu.politoed.AlarmReceiver" />
 
         <activity
-            android:name="com.example.virginia.cs.edu.politoed.AlarmLockScreen"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:name="com.example.virginia.cs.edu.politoed.AlarmLockScreen"
+
+
             android:label="Politoed"
             android:theme="@style/FullscreenTheme" >
         </activity>
         <activity
             android:name="com.example.virginia.cs.edu.politoed.AllAlarms"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.example.virginia.cs.edu.politoed.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName="com.example.virginia.cs.edu.politoed.AllAlarms" >
 
             <!-- Parent activity meta-data to support API level 7+ -->
@@ -79,7 +70,6 @@
         <activity
             android:name="com.example.virginia.cs.edu.politoed.OAuth"
             android:label="@string/title_activity_oauth" >
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -90,6 +80,18 @@
                     android:host="alarmapp"
                     android:scheme="oauth" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.virginia.cs.edu.politoed.EditAlarm"
+            android:label="Edit Alarm"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+
+            android:parentActivityName="com.example.virginia.cs.edu.politoed.AllAlarms">
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.virginia.cs.edu.politoed.AllAlarms" />
         </activity>
     </application>
 
