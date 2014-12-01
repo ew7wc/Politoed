@@ -69,7 +69,7 @@
         </activity>
         <activity
             android:name="com.example.virginia.cs.edu.politoed.OAuth"
-            android:label="@string/title_activity_oauth" >
+            android:label="Twitter Login" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

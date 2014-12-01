@@ -122,7 +122,7 @@ public class SetAlarm extends Activity {
                 i = new Intent(SetAlarm.this, SettingsActivity.class);
                 startActivity(i);
                 return true;
-            case R.id.action_add:
+            case R.id.action_add_alarm:
                 //go to add alarm activity
                 i = new Intent(SetAlarm.this, SetAlarm.class);
                 startActivityForResult(i, 1);

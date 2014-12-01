@@ -1,8 +1,13 @@
 package com.example.virginia.cs.edu.politoed;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -30,18 +35,43 @@ public class OAuth extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
-        if (preferences == null) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobileData = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if (mWifi.isConnected()) {
+            if (preferences == null) {
+                preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            }
+
+            int i = handleCallback();
+
+            if (i == 1 || i == -1) {
+                finish();
+            } else if (i == 0) {
+                authorizeApp();
+                finish();
+            }
+        }
+        else {
+            // 1. Instantiate an AlertDialog.Builder with its constructor
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            // 2. Chain together various setter methods to set the dialog characteristics
+            builder.setMessage("Check your settings, and make sure you are connected to Wifi.")
+                    .setTitle("Network Error!");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //Go back to previous activity
+                    finish();
+                }
+            });
+            // 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
-        int i = handleCallback();
-
-        if (i == 1 || i == -1) {
-            finish();
-        } else if (i == 0) {
-            authorizeApp();
-            finish();
-        }
     }
 
     @Override
@@ -97,9 +127,13 @@ public class OAuth extends Activity {
             return;
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(requestToken.getAuthenticationURL()));
-        this.startActivity(intent);
+
+
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(requestToken.getAuthenticationURL()));
+            this.startActivity(intent);
+
+
     }
 
     private int handleCallback() {
