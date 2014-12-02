@@ -139,7 +139,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                                     pi = PendingIntent.getBroadcast(v.getContext(), alarmID, i, PendingIntent.FLAG_CANCEL_CURRENT);
                                     AlarmManager am = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
                                     am.cancel(pi);
-                                    context.recreate();
+
+                                    if (getGroupCount()==0) {
+                                        context.recreate();
+                                    }
 
 
 
