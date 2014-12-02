@@ -23,6 +23,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -42,6 +43,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> alarms;
     private List<Integer> alarmIDs;
     private DatabaseHelper db;
+    private ImageView noAlarms;
 
     public ExpandableListAdapter(Activity context, List<String> alarms,
                                  Map<String, List<String>> alarmCollections) {
@@ -107,6 +109,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.group_item,null);
             ImageButton deleteAlarmBtn = (ImageButton) convertView.findViewById(R.id.deleteAlarmBtn);
 
+            final View finalConvertView = convertView;
             deleteAlarmBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(final View v) {
@@ -136,6 +139,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                                     pi = PendingIntent.getBroadcast(v.getContext(), alarmID, i, PendingIntent.FLAG_CANCEL_CURRENT);
                                     AlarmManager am = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
                                     am.cancel(pi);
+
+
                                 }
                             });
                     builder.setNegativeButton("No",

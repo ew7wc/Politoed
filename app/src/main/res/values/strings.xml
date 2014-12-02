@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Politoed</string>
+    <string name="app_name">AlarmToed</string>
     <string name="lightUp">Light up your RPi!</string>
     <string name="directions">Enter your IP Address to send your request.</string>
     <string name="action_settings">Settings</string>
@@ -45,5 +45,12 @@
 
     <string name="title_activity_oauth">OAuth</string>
     <string name="title_activity_edit_alarm">EditAlarm</string>
+    <string name="title_activity_help_screen">How to use this App!</string>
+    <string name="action_help">Help</string>
+    <string name="appDirections">\n1. Add an alarm for each task throughout the day (using the + button). Pro-tip: break down each task into smaller tasks so that they are more manageable. Hit each sub-task systematically as each alarm goes off throughout the day. Before you know it, you’ll be done with your work! (Congratulations!)
+    \n\n2. Customize each alarm based on the type of task you have. Each Task Category is color coded and corresponds to the color of the LED lights attached to the Raspberry Pi.
+    \n\nClass = Yellow; Errands = Green; Fitness = Purple; Meeting = Orange; Social = Pink; Miscellaneous = Blue.
+    \n\n3. Set priorities to each task! A higher priority level results in brighter LED lights, giving you a stronger sense of urgency as you power through your task!
+ </string>
 
 </resources>

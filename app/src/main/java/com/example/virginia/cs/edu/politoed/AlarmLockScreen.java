@@ -13,10 +13,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -65,7 +69,7 @@ public class AlarmLockScreen extends Activity {
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
     private int alarmID;
-
+    private boolean dismissed = false;
     private DatabaseHelper db;
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {
@@ -235,6 +239,49 @@ public class AlarmLockScreen extends Activity {
         alarmInfo = (TextView) findViewById(R.id.alarmInfo);
         alarmInfo.setText(a.getName() + " is now due!");
         sendJson(makeJSONString());
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        String pref = sp.getString("notifications_new_message_ringtone",
+                alert.toString());
+
+        alert = Uri.parse(pref);
+
+        //Determine if alarm notifications is checked
+        boolean alarmNotify = sp.getBoolean("notifications_new_message", true);
+        final boolean vibrate = sp.getBoolean("notifications_new_message_vibrate", false);
+
+
+        if (alarmNotify) {
+
+            final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), alert);
+
+            if (vibrate) {
+                Vibrator myVib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                myVib.vibrate(500);
+            }
+
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                int i = 0;
+
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    i++;
+
+                    if (i < 10 && !dismissed) {
+                        if (vibrate) {
+                            Vibrator myVib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                            myVib.vibrate(500);
+                        }
+                        mp.start();
+                    }
+
+                }
+            });
+        }
+
     }
 
     public void closeAlarmLockScreen(View v) {
@@ -295,11 +342,7 @@ public class AlarmLockScreen extends Activity {
         token = preferences.getString("oauth_token", "");
         tokenSecret = preferences.getString("oauth_token_secret", "");
 
-        if (token.isEmpty() || tokenSecret.isEmpty()) {
-            Toast.makeText(getApplicationContext(),
-                    "Twitter credentials not found (remember to log in first).",
-                    Toast.LENGTH_LONG).show();
-        } else {
+
             AccessToken accessToken = new AccessToken(token, tokenSecret);
             Twitter twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(consumerKey, consumerSecret);
@@ -309,7 +352,7 @@ public class AlarmLockScreen extends Activity {
                 twitter.updateStatus(tweet);
             } catch (Exception e) {
             }
-        }
+
     }
 
     private String formatTweet(String taskName) {
@@ -323,6 +366,23 @@ public class AlarmLockScreen extends Activity {
     }
 
     public void onTweetPressed(final String taskName) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String consumerKey = "LedH6x4GwAKHZeA4gSak5BI0z";
+        String consumerSecret = "kpN6DAJfB8tkzG72zfL2FJOV6VqO8gj90lHdUFUXw0a6w7jemQ";
+
+        String token, tokenSecret;
+        token = preferences.getString("oauth_token", "");
+        tokenSecret = preferences.getString("oauth_token_secret", "");
+
+        if (token.isEmpty() || tokenSecret.isEmpty()) {
+            Toast.makeText(getApplicationContext(),
+                    "Twitter credentials not found (remember to log in first).",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Thread t = new Thread() {
             public void run() {
                 postTweet(formatTweet(taskName));
@@ -344,6 +404,7 @@ public class AlarmLockScreen extends Activity {
             db.deleteAlarm(alarmID);
         }
         sendJson(clearLEDs());
+        dismissed = true;
         finish();
     }
 

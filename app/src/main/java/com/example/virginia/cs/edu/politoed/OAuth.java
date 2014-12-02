@@ -36,11 +36,14 @@ public class OAuth extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
 
-        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobileData = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (mWifi.isConnected()) {
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if (isConnected) {
             if (preferences == null) {
                 preferences = PreferenceManager.getDefaultSharedPreferences(this);
             }

@@ -1,6 +1,8 @@
 package com.example.virginia.cs.edu.politoed;
 
 import com.example.virginia.cs.edu.politoed.adapters.ExpandableListAdapter;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import java.util.Map;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class AllAlarms extends Activity {
@@ -24,6 +27,7 @@ public class AllAlarms extends Activity {
     private List<String> titleList;
     private ExpandableListAdapter expListAdapter;
     private List<Integer> alarmIDs;
+    private ImageView noAlarms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,17 @@ public class AllAlarms extends Activity {
         expListView = (ExpandableListView) findViewById(R.id.alarm_list);
         expListAdapter = new ExpandableListAdapter(this, titleList, alarmCollection,alarmIDs);
         expListView.setAdapter(expListAdapter);
-        expListView.setOnChildClickListener(new OnChildClickListener() {
+        noAlarms = (ImageView) findViewById(R.id.noAlarms);
+        if (expListAdapter.getGroupCount()==0) {
+
+            noAlarms.setVisibility(View.VISIBLE);
+        }
+        else {
+            noAlarms.setVisibility(View.INVISIBLE);
+        }
+
+
+        /*expListView.setOnChildClickListener(new OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
@@ -62,7 +76,7 @@ public class AllAlarms extends Activity {
 
                 return true;
             }
-        });
+        }); */
         //Toast.makeText(getApplicationContext(), expListAdapter.getGroup(0).toString(), Toast.LENGTH_LONG);
 
 
@@ -112,6 +126,9 @@ public class AllAlarms extends Activity {
                 i = new Intent(AllAlarms.this, SetAlarm.class);
                 startActivityForResult(i, 1);
                 return true;
+            case R.id.action_help:
+                i = new Intent(AllAlarms.this, HelpScreen.class);
+                startActivityForResult(i, 1);
             default:
                 return super.onOptionsItemSelected(item);
         }

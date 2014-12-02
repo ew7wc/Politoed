@@ -11,4 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent" >
     </ExpandableListView>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/politoed_no_tasks"
+        android:id="@+id/noAlarms"
+        android:visibility="invisible"/>
+
 </RelativeLayout>

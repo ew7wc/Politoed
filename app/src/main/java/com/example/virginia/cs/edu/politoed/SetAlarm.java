@@ -127,6 +127,13 @@ public class SetAlarm extends Activity {
                 i = new Intent(SetAlarm.this, SetAlarm.class);
                 startActivityForResult(i, 1);
                 return true;
+            case R.id.action_help:
+                i = new Intent(SetAlarm.this, HelpScreen.class);
+                startActivityForResult(i, 1);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

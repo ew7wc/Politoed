@@ -2,6 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.virginia.cs.edu.politoed.SetAlarm">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="ifRoom"
+        android:orderInCategory="100" android:showAsAction="never"
         android:icon="@drawable/ic_action_settings" />
+    <item android:id="@+id/action_help"
+        android:icon="@drawable/ic_action_help"
+        android:title="@string/action_help"
+        android:showAsAction="never" />
 </menu>

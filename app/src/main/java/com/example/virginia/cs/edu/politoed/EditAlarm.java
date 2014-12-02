@@ -1,5 +1,6 @@
 package com.example.virginia.cs.edu.politoed;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -44,7 +45,8 @@ public class EditAlarm extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_alarm);
-
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         int alarmID = getIntent().getExtras().getInt("alarmID");
@@ -245,6 +247,13 @@ public class EditAlarm extends Activity {
                 //go to add alarm activity
                 i = new Intent(EditAlarm.this, SetAlarm.class);
                 startActivityForResult(i, 1);
+                return true;
+            case R.id.action_help:
+                i = new Intent(EditAlarm.this, HelpScreen.class);
+                startActivityForResult(i, 1);
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

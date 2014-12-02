@@ -2,7 +2,9 @@
         package com.example.virginia.cs.edu.politoed;
 
         import android.annotation.TargetApi;
+        import android.app.ActionBar;
         import android.content.Context;
+        import android.content.Intent;
         import android.content.SharedPreferences;
         import android.content.res.Configuration;
         import android.media.Ringtone;
@@ -19,6 +21,7 @@
         import android.preference.PreferenceManager;
         import android.preference.RingtonePreference;
         import android.text.TextUtils;
+        import android.view.MenuItem;
 
 
         import java.util.List;
@@ -43,6 +46,30 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        Intent i;
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                i = new Intent(SettingsActivity.this, HelpScreen.class);
+                startActivityForResult(i, 1);
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     /*protected void onResume() {
         super.onResume();
