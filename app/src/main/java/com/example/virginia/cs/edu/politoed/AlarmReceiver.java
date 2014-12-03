@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         dh = new DatabaseHelper(context);
-        Toast.makeText(context, "Alarm has gone off", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Alarm has gone off", Toast.LENGTH_LONG).show();
         Intent i = new Intent(context, AlarmLockScreen.class);
 
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

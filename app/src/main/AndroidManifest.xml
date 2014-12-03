@@ -32,9 +32,9 @@
         <activity
             android:name="com.example.virginia.cs.edu.politoed.AlarmLockScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Politoed"
+            android:label="AlarmToed"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme">
         </activity>
         <activity
             android:name="com.example.virginia.cs.edu.politoed.AllAlarms"

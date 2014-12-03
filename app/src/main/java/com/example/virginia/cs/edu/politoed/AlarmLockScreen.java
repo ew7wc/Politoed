@@ -357,10 +357,10 @@ public class AlarmLockScreen extends Activity {
 
     private String formatTweet(String taskName) {
         if (taskName.isEmpty()) {
-            return "I just finished a task with my awesome #AlarmApp!";
+            return "I just finished a task with my awesome #AlarmToed!";
         } else {
             return String.format(
-                    "I just finished %s with my awesome #AlarmApp!",
+                    "I just finished %s with my awesome #AlarmToed!",
                     taskName);
         }
     }
@@ -484,6 +484,12 @@ public class AlarmLockScreen extends Activity {
 
     private String clearLEDs() {
         return "{ \"lights\": [  {\"lightId\": 1, \"red\":255,\"green\":105,\"blue\":180, \"intensity\": " + 0 + "}],  \"propagate\": true } ";
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        return;
     }
 
 }
